@@ -17,8 +17,12 @@ public class FeedList {
         feedDao = databaseHelper.getFeedDao();
         feeds = new ArrayList<Feed>(feedDao.queryForAll());
     }
-    public void UpdateFeeds() {
+    public void updateFeeds() {
         feeds.clear();
         feeds.addAll(feedDao.queryForAll());
+    }
+    public void deleteFeed(Feed feed) {
+        feedDao.delete(feed);
+        updateFeeds();
     }
 }

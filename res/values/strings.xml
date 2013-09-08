@@ -12,5 +12,7 @@
     <string name="feedFrequencyType">Frequency to check for new podcasts</string>
     <string name="newFeedButton">New Podcast</string>
     <string name="savefeed">Save</string>
+    <string name="downloadFeed">Download Latest Podcasts</string>
+    <string name="deleteFeed">Delete Podcast</string>
 
 </resources>

@@ -21,8 +21,7 @@ public class FeedFormActivity extends Activity {
         String url = ((EditText) findViewById(R.id.EditTextURL)).getText().toString();
         boolean wifiOnly = ((CheckBox) findViewById(R.id.CheckBoxWifiOnly)).isChecked();
         String downloadFrequency = ((Spinner) findViewById(R.id.SpinnerFeedCheckFrequency)).getSelectedItem().toString();
-        Feed feed = new Feed(name, url, 0, wifiOnly);
-
+        Feed feed = new Feed(name, url, downloadFrequency, wifiOnly);
         DatabaseHelper databaseHelper = new DatabaseHelper((Context) this);
         RuntimeExceptionDao<Feed, Integer> feedDao = databaseHelper.getFeedDao();
         feedDao.create(feed);

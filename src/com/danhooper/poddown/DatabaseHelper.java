@@ -15,9 +15,11 @@ import com.danhooper.poddown.Feed;
 
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final String DATABASE_NAME = "podDown.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
     private Dao<Feed, Integer> feedDao = null;
+    private Dao<PodcastHistory, Integer> pHistDao = null;
     private RuntimeExceptionDao<Feed, Integer> feedRuntimeDao = null;
+    private RuntimeExceptionDao<PodcastHistory, Integer> pHistRuntimeDao = null;
     
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -28,6 +30,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         try {
             Log.i(DatabaseHelper.class.getName(), "onCreate");
             TableUtils.createTable(connectionSource, Feed.class);
+            TableUtils.createTable(connectionSource, PodcastHistory.class);
         } catch (SQLException e) {
             Log.e(DatabaseHelper.class.getName(), "Can't create database", e);
             throw new RuntimeException(e);
@@ -41,6 +44,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         try {
             Log.i(DatabaseHelper.class.getName(), "onUpgrade");
             TableUtils.dropTable(connectionSource, Feed.class, true);
+            TableUtils.dropTable(connectionSource, PodcastHistory.class, true);
             // after we drop the old databases, we create the new ones
             onCreate(db, connectionSource);
         } catch (SQLException e) {
@@ -49,18 +53,30 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         }
 
     }
-    public Dao<Feed, Integer> getDao() throws SQLException {
-        if (feedDao == null) {
-            feedDao = getDao(Feed.class);
-        }
-        return feedDao;
-    }
+//    public Dao<Feed, Integer> getDao() throws SQLException {
+//        if (feedDao == null) {
+//            feedDao = getDao(Feed.class);
+//        }
+//        return feedDao;
+//    }
+//    public Dao<PodcastHistory, Integer> getDao() throws SQLException {
+//        if (pHistDao == null) {
+//            pHistDao = getDao(PodcastHistory.class);
+//        }
+//        return pHistDao;
+//    }
 
     public RuntimeExceptionDao<Feed, Integer> getFeedDao() {
         if (feedRuntimeDao == null) {
             feedRuntimeDao = getRuntimeExceptionDao(Feed.class);
         }
         return feedRuntimeDao;
+    }
+    public RuntimeExceptionDao<PodcastHistory, Integer> getPodcastHistoryDao() {
+        if (pHistRuntimeDao == null) {
+            pHistRuntimeDao = getRuntimeExceptionDao(PodcastHistory.class);
+        }
+        return pHistRuntimeDao;
     }
 
     /**
