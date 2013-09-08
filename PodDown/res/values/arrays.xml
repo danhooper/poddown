@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="feedCheckFrequency">
+        <item>@string/feedCheckNever</item>
+        <item>@string/feedCheck1Hour</item>
+        <item>@string/feedCheck6Hour</item>
+        <item>@string/feedCheck12Hour</item>
+        <item>@string/feedCheck24our</item>
+    </string-array>
+</resources>
