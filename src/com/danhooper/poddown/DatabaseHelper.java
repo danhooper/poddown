@@ -16,8 +16,6 @@ import com.danhooper.poddown.Feed;
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final String DATABASE_NAME = "podDown.db";
     private static final int DATABASE_VERSION = 3;
-    private Dao<Feed, Integer> feedDao = null;
-    private Dao<PodcastHistory, Integer> pHistDao = null;
     private RuntimeExceptionDao<Feed, Integer> feedRuntimeDao = null;
     private RuntimeExceptionDao<PodcastHistory, Integer> pHistRuntimeDao = null;
     

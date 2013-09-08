@@ -81,6 +81,9 @@ public class URLView extends Activity {
         case R.id.deleteFeed:
             deleteFeed((Feed) listItem);
             return true;
+        case R.id.editFeed:
+            editFeed(((Feed) listItem));
+            return true;
         case R.id.downloadFeed:
             downloadFeed(((Feed) listItem));
             return true;
@@ -90,6 +93,11 @@ public class URLView extends Activity {
     }
     public void downloadFeed(Feed feed) {
         new FeedRetriever(this, this).execute(feed);
+    }
+    public void editFeed(Feed feed) {
+        Intent launchNewFeedActivity = new Intent(this, FeedFormActivity.class);
+        launchNewFeedActivity.putExtra("feed", feed);
+        startActivityForResult (launchNewFeedActivity, 0);
     }
     public void deleteFeed(Feed feed) {
         Toast.makeText(this.getApplicationContext(),

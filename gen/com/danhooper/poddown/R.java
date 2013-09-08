@@ -23,8 +23,9 @@ public final class R {
         public static final int EditTextURL=0x7f080003;
         public static final int SpinnerFeedCheckFrequency=0x7f080005;
         public static final int button1=0x7f080000;
-        public static final int deleteFeed=0x7f080008;
+        public static final int deleteFeed=0x7f080009;
         public static final int downloadFeed=0x7f080007;
+        public static final int editFeed=0x7f080008;
         public static final int feedListView=0x7f080001;
         public static final int menu_settings=0x7f080006;
     }
@@ -38,8 +39,9 @@ public final class R {
     }
     public static final class string {
         public static final int app_name=0x7f050000;
-        public static final int deleteFeed=0x7f05000d;
+        public static final int deleteFeed=0x7f05000e;
         public static final int downloadFeed=0x7f05000c;
+        public static final int editFeed=0x7f05000d;
         public static final int feedCheck12Hour=0x7f050007;
         public static final int feedCheck1Hour=0x7f050005;
         public static final int feedCheck24our=0x7f050008;

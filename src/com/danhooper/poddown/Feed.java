@@ -1,11 +1,10 @@
 package com.danhooper.poddown;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.io.Serializable;
 
 import com.j256.ormlite.field.DatabaseField;
 
-public class Feed {
+public class Feed implements Serializable {
     @DatabaseField(generatedId = true)
     int id;
     @DatabaseField
