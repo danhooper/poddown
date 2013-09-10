@@ -15,5 +15,6 @@
     <string name="downloadFeed">Download Latest Podcasts</string>
     <string name="editFeed">Edit Podcast</string>
     <string name="deleteFeed">Delete Podcast</string>
+    <string name="podcastDownloads">Previous Downloads</string>
 
 </resources>

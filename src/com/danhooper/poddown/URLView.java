@@ -87,6 +87,8 @@ public class URLView extends Activity {
         case R.id.downloadFeed:
             downloadFeed(((Feed) listItem));
             return true;
+        case R.id.podcastDownloads:
+            showPodcastDownloads((Feed) listItem);
         default:
             return super.onContextItemSelected(item);
         }
@@ -98,6 +100,11 @@ public class URLView extends Activity {
         Intent launchNewFeedActivity = new Intent(this, FeedFormActivity.class);
         launchNewFeedActivity.putExtra("feed", feed);
         startActivityForResult (launchNewFeedActivity, 0);
+    }
+    public void showPodcastDownloads(Feed feed) {
+        Intent pHistActivity = new Intent(this, PodcastHistoryView.class);
+        pHistActivity.putExtra("feed", feed);
+        startActivityForResult (pHistActivity, 0);
     }
     public void deleteFeed(Feed feed) {
         Toast.makeText(this.getApplicationContext(),

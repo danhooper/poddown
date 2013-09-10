@@ -3,6 +3,7 @@
     <item android:id="@+id/downloadFeed" android:title="@string/downloadFeed"></item>
     <item android:id="@+id/editFeed" android:title="@string/editFeed"></item>
     <item android:id="@+id/deleteFeed" android:title="@string/deleteFeed"></item>
+    <item android:id="@+id/podcastDownloads" android:title="@string/podcastDownloads"></item>
     
 
 </menu>

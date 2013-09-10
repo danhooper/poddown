@@ -1,6 +1,7 @@
 package com.danhooper.poddown;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -49,5 +50,11 @@ public class PodcastHistory {
         DatabaseHelper databaseHelper = new DatabaseHelper(context);
         RuntimeExceptionDao<PodcastHistory, Integer> pHistDao = databaseHelper.getPodcastHistoryDao();
         pHistDao.create(pHist);        
+    }
+    public static ArrayList<PodcastHistory> getAllPodcastHistory(Context context) {
+        DatabaseHelper databaseHelper = new DatabaseHelper(context);
+        RuntimeExceptionDao<PodcastHistory, Integer> pHistDao = databaseHelper.getPodcastHistoryDao();
+        ArrayList<PodcastHistory> podcastHists = new ArrayList<PodcastHistory>(pHistDao.queryForAll());
+        return podcastHists;
     }
 }
