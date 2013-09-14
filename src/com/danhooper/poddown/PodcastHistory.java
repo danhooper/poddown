@@ -8,6 +8,7 @@ import android.content.Context;
 
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.stmt.QueryBuilder;
 
 public class PodcastHistory {
     public static final String PODCAST_FILE_NAME = "podcast_file_name";
@@ -54,7 +55,14 @@ public class PodcastHistory {
     public static ArrayList<PodcastHistory> getAllPodcastHistory(Context context) {
         DatabaseHelper databaseHelper = new DatabaseHelper(context);
         RuntimeExceptionDao<PodcastHistory, Integer> pHistDao = databaseHelper.getPodcastHistoryDao();
-        ArrayList<PodcastHistory> podcastHists = new ArrayList<PodcastHistory>(pHistDao.queryForAll());
+        QueryBuilder<PodcastHistory, Integer> pHistQuery = pHistDao.queryBuilder();
+        ArrayList<PodcastHistory> podcastHists = null;
+        try {
+            podcastHists = new ArrayList<PodcastHistory>(pHistQuery.orderBy("id", true).query());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+//        ArrayList<PodcastHistory> podcastHists = new ArrayList<PodcastHistory>(pHistDao.queryForAll());
         return podcastHists;
     }
 }

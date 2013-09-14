@@ -24,6 +24,8 @@
         </activity>
         <activity android:name="FeedFormActivity">
         </activity>
+        <activity android:name="PodcastHistoryView">
+        </activity>
     </application>
 
 </manifest>
