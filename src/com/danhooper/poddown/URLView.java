@@ -2,9 +2,7 @@ package com.danhooper.poddown;
 
 import com.danhooper.poddown.R;
 
-import android.net.Uri;
 import android.os.Bundle;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -40,6 +38,7 @@ public class URLView extends Activity {
         feedView.setAdapter(feedListViewAdapter);
         this.registerForContextMenu(feedView);
         feedListViewAdapter.notifyDataSetChanged();
+        startService(new Intent(this, DownloadService.class));
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -95,7 +94,7 @@ public class URLView extends Activity {
         }
     }
     public void downloadFeed(Feed feed) {
-        new FeedRetriever(this, this).execute(feed);
+        new FeedRetriever(this).execute(feed);
     }
     public void editFeed(Feed feed) {
         Intent launchNewFeedActivity = new Intent(this, FeedFormActivity.class);

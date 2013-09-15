@@ -13,7 +13,6 @@ import java.net.URLConnection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.net.Uri;
@@ -25,12 +24,10 @@ import android.app.DownloadManager.Request;
 
 public class FeedRetriever extends AsyncTask<Feed, Void, Boolean> {
     private static final String TAG = "PodDownFeedRetriever";
-    Activity activity;
     Feed feed;
     Context ctx;
 
-    public FeedRetriever(Activity a, Context context) {
-        activity = a;
+    public FeedRetriever(Context context) {
         ctx = context;
     }
 
@@ -125,7 +122,7 @@ public class FeedRetriever extends AsyncTask<Feed, Void, Boolean> {
     }
 
     protected void onPostExecute(String result) {
-        Toast.makeText(activity.getApplicationContext(), "Feed Downloaded",
+        Toast.makeText(ctx, "Feed Downloaded",
                 Toast.LENGTH_LONG).show();
     }
 }
