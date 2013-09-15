@@ -1,36 +1,32 @@
 package com.danhooper.poddown;
 
-import com.danhooper.poddown.R;
-
-import android.os.Bundle;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
+import android.os.Bundle;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
-import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.AdapterView.OnItemClickListener;
 
-public class URLView extends Activity {
-    private DatabaseHelper databaseHelper;
+public class PodDown extends Activity {
     ArrayAdapter<Feed> feedListViewAdapter;
     FeedList feedList;
+    @SuppressWarnings("unused")
     private static final String TAG = "PodDown";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_urlview);
-        databaseHelper = new DatabaseHelper((Context) this);
-        feedList = new FeedList(databaseHelper);
+        feedList = new FeedList(this);
         feedListViewAdapter = new ArrayAdapter<Feed>(this,
                 android.R.layout.simple_list_item_1, feedList.feeds);
         final ListView feedView = (ListView) findViewById(R.id.feedListView);
@@ -40,26 +36,28 @@ public class URLView extends Activity {
         feedListViewAdapter.notifyDataSetChanged();
         startService(new Intent(this, DownloadService.class));
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_urlview, menu);
         return true;
     }
+
     public void newFeed(View button) {
         Intent launchNewFeedActivity = new Intent(this, FeedFormActivity.class);
-        startActivityForResult (launchNewFeedActivity, 0);
+        startActivityForResult(launchNewFeedActivity, 0);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         feedList.updateFeeds();
         feedListViewAdapter.notifyDataSetChanged();
     }
 
-    private OnItemClickListener feedlClickListener = new OnItemClickListener() {
+    private final OnItemClickListener feedlClickListener = new OnItemClickListener() {
         public void onItemClick(AdapterView<?> parent, View view, int position,
                 long id) {
-            Toast.makeText(parent.getContext(), "Item Clicked #" + position,
-                    Toast.LENGTH_SHORT).show();
+            openContextMenu(view);
         }
     };
 
@@ -70,6 +68,7 @@ public class URLView extends Activity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_feedview, menu);
     }
+
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         final AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
@@ -93,23 +92,26 @@ public class URLView extends Activity {
             return super.onContextItemSelected(item);
         }
     }
+
     public void downloadFeed(Feed feed) {
         new FeedRetriever(this).execute(feed);
     }
+
     public void editFeed(Feed feed) {
         Intent launchNewFeedActivity = new Intent(this, FeedFormActivity.class);
         launchNewFeedActivity.putExtra("feed", feed);
-        startActivityForResult (launchNewFeedActivity, 0);
+        startActivityForResult(launchNewFeedActivity, 0);
     }
+
     public void showPodcastDownloads(Feed feed) {
         Intent pHistActivity = new Intent(this, PodcastHistoryView.class);
         pHistActivity.putExtra("feed", feed);
-        startActivityForResult (pHistActivity, 0);
+        startActivityForResult(pHistActivity, 0);
     }
+
     public void deleteFeed(Feed feed) {
         Toast.makeText(this.getApplicationContext(),
-                "Deleting " + feed.toString(), Toast.LENGTH_SHORT)
-                .show();
+                "Deleting " + feed.toString(), Toast.LENGTH_SHORT).show();
         feedList.deleteFeed(feed);
         feedListViewAdapter.notifyDataSetChanged();
     }

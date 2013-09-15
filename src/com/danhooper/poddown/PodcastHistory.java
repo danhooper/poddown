@@ -18,7 +18,7 @@ public class PodcastHistory {
     String fileName;
     @DatabaseField
     String url;
-    
+
     PodcastHistory() {
         // needed by ormlite
     }
@@ -26,19 +26,20 @@ public class PodcastHistory {
     PodcastHistory(String fileName, String url) {
         this.fileName = fileName;
         this.url = url;
-    }    
+    }
+
     @Override
     public String toString() {
         return this.fileName;
     }
+
     public static boolean alreadyDownloaded(Context context, String fileName) {
         DatabaseHelper databaseHelper = new DatabaseHelper(context);
-        RuntimeExceptionDao<PodcastHistory, Integer> pHistDao = databaseHelper.getPodcastHistoryDao();
+        RuntimeExceptionDao<PodcastHistory, Integer> pHistDao = databaseHelper
+                .getPodcastHistoryDao();
         try {
-            List<PodcastHistory> podcasts =
-                    pHistDao.queryBuilder().where()
-                       .eq(PodcastHistory.PODCAST_FILE_NAME, fileName)
-                       .query();
+            List<PodcastHistory> podcasts = pHistDao.queryBuilder().where()
+                    .eq(PodcastHistory.PODCAST_FILE_NAME, fileName).query();
             if (podcasts.size() > 0) {
                 return true;
             }
@@ -47,22 +48,27 @@ public class PodcastHistory {
         }
         return false;
     }
+
     public static void addPostcast(Context context, PodcastHistory pHist) {
         DatabaseHelper databaseHelper = new DatabaseHelper(context);
-        RuntimeExceptionDao<PodcastHistory, Integer> pHistDao = databaseHelper.getPodcastHistoryDao();
-        pHistDao.create(pHist);        
+        RuntimeExceptionDao<PodcastHistory, Integer> pHistDao = databaseHelper
+                .getPodcastHistoryDao();
+        pHistDao.create(pHist);
     }
+
     public static ArrayList<PodcastHistory> getAllPodcastHistory(Context context) {
         DatabaseHelper databaseHelper = new DatabaseHelper(context);
-        RuntimeExceptionDao<PodcastHistory, Integer> pHistDao = databaseHelper.getPodcastHistoryDao();
-        QueryBuilder<PodcastHistory, Integer> pHistQuery = pHistDao.queryBuilder();
+        RuntimeExceptionDao<PodcastHistory, Integer> pHistDao = databaseHelper
+                .getPodcastHistoryDao();
+        QueryBuilder<PodcastHistory, Integer> pHistQuery = pHistDao
+                .queryBuilder();
         ArrayList<PodcastHistory> podcastHists = null;
         try {
-            podcastHists = new ArrayList<PodcastHistory>(pHistQuery.orderBy("id", true).query());
+            podcastHists = new ArrayList<PodcastHistory>(pHistQuery.orderBy(
+                    "id", true).query());
         } catch (SQLException e) {
             e.printStackTrace();
         }
-//        ArrayList<PodcastHistory> podcastHists = new ArrayList<PodcastHistory>(pHistDao.queryForAll());
         return podcastHists;
     }
 }

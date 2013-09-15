@@ -16,18 +16,19 @@ public class PodcastHistoryView extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.podcast_history);
         pHistListViewAdapter = new ArrayAdapter<PodcastHistory>(this,
-                android.R.layout.simple_list_item_1, 
+                android.R.layout.simple_list_item_1,
                 PodcastHistory.getAllPodcastHistory(this));
         final ListView pHistView = (ListView) findViewById(R.id.pHistListView);
-//        feedView.setOnItemClickListener(feedlClickListener);
         pHistView.setAdapter(pHistListViewAdapter);
         this.registerForContextMenu(pHistView);
         pHistListViewAdapter.notifyDataSetChanged();
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
-    public boolean onOptionsItemSelected(MenuItem item){
-        Intent myIntent = new Intent(getApplicationContext(), URLView.class);
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent myIntent = new Intent(getApplicationContext(), PodDown.class);
         startActivityForResult(myIntent, 0);
         return true;
     }

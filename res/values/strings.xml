@@ -3,7 +3,7 @@
     <string name="app_name">PodDown</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
-    <string name="title_activity_urlview">URLView</string>
+    <string name="title_activity_urlview">PodDown</string>
     <string name="feedCheckNever">Never</string>
     <string name="feedCheck1Hour">Every Hour</string>
     <string name="feedCheck6Hour">Every 6 Hours</string>

@@ -50,18 +50,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         }
 
     }
-//    public Dao<Feed, Integer> getDao() throws SQLException {
-//        if (feedDao == null) {
-//            feedDao = getDao(Feed.class);
-//        }
-//        return feedDao;
-//    }
-//    public Dao<PodcastHistory, Integer> getDao() throws SQLException {
-//        if (pHistDao == null) {
-//            pHistDao = getDao(PodcastHistory.class);
-//        }
-//        return pHistDao;
-//    }
 
     public RuntimeExceptionDao<Feed, Integer> getFeedDao() {
         if (feedRuntimeDao == null) {

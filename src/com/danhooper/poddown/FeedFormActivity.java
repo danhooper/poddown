@@ -48,7 +48,7 @@ public class FeedFormActivity extends Activity {
         finish();
     }
     public boolean onOptionsItemSelected(MenuItem item){
-        Intent myIntent = new Intent(getApplicationContext(), URLView.class);
+        Intent myIntent = new Intent(getApplicationContext(), PodDown.class);
         startActivityForResult(myIntent, 0);
         return true;
     }

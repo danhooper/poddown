@@ -5,6 +5,7 @@ import java.io.Serializable;
 import com.j256.ormlite.field.DatabaseField;
 
 public class Feed implements Serializable {
+    private static final long serialVersionUID = 1L;
     @DatabaseField(generatedId = true)
     int id;
     @DatabaseField
@@ -15,7 +16,7 @@ public class Feed implements Serializable {
     int downloadFrequency;
     @DatabaseField
     boolean wifiOnly;
-    
+
     Feed() {
         // needed by ormlite
     }
@@ -26,17 +27,19 @@ public class Feed implements Serializable {
         this.downloadFrequency = downloadFrequency;
         this.wifiOnly = wifiOnly;
     }
+
     Feed(String name, String url, String downloadFrequency, boolean wifiOnly) {
         this.name = name;
         this.url = url;
         this.downloadFrequency = convertDownloadFrequency(downloadFrequency);
         this.wifiOnly = wifiOnly;
     }
-    
+
     @Override
     public String toString() {
         return this.name;
     }
+
     public static int convertDownloadFrequency(String downloadFrequency) {
         if (downloadFrequency.contains("6")) {
             return 6;
@@ -47,6 +50,7 @@ public class Feed implements Serializable {
         }
         return 0;
     }
+
     public String getFeedFileName() {
         String fileName = name.replaceAll("\\W+", "_");
         fileName += ".txt";

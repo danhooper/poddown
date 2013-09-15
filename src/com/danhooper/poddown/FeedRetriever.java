@@ -14,21 +14,21 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.app.DownloadManager;
+import android.app.DownloadManager.Request;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
-import android.app.DownloadManager.Request;
 
 public class FeedRetriever extends AsyncTask<Feed, Void, Boolean> {
     private static final String TAG = "PodDownFeedRetriever";
     Feed feed;
-    Context ctx;
+    Context context;
 
     public FeedRetriever(Context context) {
-        ctx = context;
+        this.context = context;
     }
 
     private Boolean openHttpConnection(Feed feed) throws IOException {
@@ -51,15 +51,14 @@ public class FeedRetriever extends AsyncTask<Feed, Void, Boolean> {
                 in = httpConn.getInputStream();
                 InputStreamReader urlReader = new InputStreamReader(in);
                 BufferedReader bufferedReader = new BufferedReader(urlReader);
-                FileOutputStream fos = ctx.openFileOutput(feed.getFeedFileName(),
-                        Context.MODE_PRIVATE);
+                FileOutputStream fos = context.openFileOutput(
+                        feed.getFeedFileName(), Context.MODE_PRIVATE);
                 line = bufferedReader.readLine();
                 while (line != null) {
                     fos.write(line.getBytes());
                     line = bufferedReader.readLine();
                 }
                 fos.close();
-
             }
         } catch (Exception ex) {
             throw new IOException("Error connecting");
@@ -69,7 +68,8 @@ public class FeedRetriever extends AsyncTask<Feed, Void, Boolean> {
 
     private void downloadPodcasts(Feed feed) {
         try {
-            FileInputStream urlFile = ctx.openFileInput(feed.getFeedFileName());
+            FileInputStream urlFile = context.openFileInput(feed
+                    .getFeedFileName());
             InputStreamReader urlFileStream = new InputStreamReader(urlFile);
             BufferedReader bufferedReader = new BufferedReader(urlFileStream);
             String line;
@@ -92,12 +92,11 @@ public class FeedRetriever extends AsyncTask<Feed, Void, Boolean> {
     private void downloadPodcast(String podcastUrl) {
         Uri podcastURI = Uri.parse(podcastUrl);
         String path = podcastURI.getPath();
-        String destFile = path
-                .substring(path.lastIndexOf('/') + 1);
-        if (!PodcastHistory.alreadyDownloaded(ctx, destFile)) {
-            PodcastHistory.addPostcast(ctx, 
-                    new PodcastHistory(destFile, podcastUrl));
-            DownloadManager downloadMgr = (DownloadManager) ctx
+        String destFile = path.substring(path.lastIndexOf('/') + 1);
+        if (!PodcastHistory.alreadyDownloaded(context, destFile)) {
+            PodcastHistory.addPostcast(context, new PodcastHistory(destFile,
+                    podcastUrl));
+            DownloadManager downloadMgr = (DownloadManager) context
                     .getSystemService(Context.DOWNLOAD_SERVICE);
             Request req = new Request(podcastURI);
             req.setDestinationInExternalPublicDir(
@@ -107,13 +106,13 @@ public class FeedRetriever extends AsyncTask<Feed, Void, Boolean> {
         }
     }
 
+    @Override
     protected Boolean doInBackground(Feed... feeds) {
-        for (int feedIndex = 0; feedIndex < feeds.length; feedIndex++) {
+        for (Feed feed : feeds) {
             try {
-                if (openHttpConnection(feeds[feedIndex])) {
-                    downloadPodcasts(feeds[feedIndex]);
+                if (openHttpConnection(feed)) {
+                    downloadPodcasts(feed);
                 }
-    
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -122,7 +121,6 @@ public class FeedRetriever extends AsyncTask<Feed, Void, Boolean> {
     }
 
     protected void onPostExecute(String result) {
-        Toast.makeText(ctx, "Feed Downloaded",
-                Toast.LENGTH_LONG).show();
+        Toast.makeText(context, "Feed Downloaded", Toast.LENGTH_LONG).show();
     }
 }
