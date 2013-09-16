@@ -17,7 +17,7 @@ public class PodcastHistoryView extends Activity {
         setContentView(R.layout.podcast_history);
         pHistListViewAdapter = new ArrayAdapter<PodcastHistory>(this,
                 android.R.layout.simple_list_item_1,
-                PodcastHistory.getAllPodcastHistory(this));
+                new PodcastHistoryList(this).getList());
         final ListView pHistView = (ListView) findViewById(R.id.pHistListView);
         pHistView.setAdapter(pHistListViewAdapter);
         this.registerForContextMenu(pHistView);

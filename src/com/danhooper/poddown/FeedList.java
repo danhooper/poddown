@@ -28,16 +28,10 @@ public class FeedList {
         updateFeeds();
     }
 
-    private static ArrayList<Feed> queryForAllFeeds(
+    private ArrayList<Feed> queryForAllFeeds(
             RuntimeExceptionDao<Feed, Integer> feedDao) {
         ArrayList<Feed> feeds = new ArrayList<Feed>(feedDao.queryForAll());
         return feeds;
     }
 
-    public static ArrayList<Feed> getAllFeeds(Context context) {
-        DatabaseHelper databaseHelper = new DatabaseHelper(context);
-        RuntimeExceptionDao<Feed, Integer> feedDao = databaseHelper
-                .getFeedDao();
-        return queryForAllFeeds(feedDao);
-    }
 }

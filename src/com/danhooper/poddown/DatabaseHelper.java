@@ -17,11 +17,11 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final int DATABASE_VERSION = 3;
     private RuntimeExceptionDao<Feed, Integer> feedRuntimeDao = null;
     private RuntimeExceptionDao<PodcastHistory, Integer> pHistRuntimeDao = null;
-    
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
-    
+
     @Override
     public void onCreate(SQLiteDatabase db, ConnectionSource connectionSource) {
         try {
@@ -36,7 +36,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, ConnectionSource connectionSource, 
+    public void onUpgrade(SQLiteDatabase db, ConnectionSource connectionSource,
             int oldVersion, int newVersion) {
         try {
             Log.i(DatabaseHelper.class.getName(), "onUpgrade");

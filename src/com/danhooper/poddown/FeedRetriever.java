@@ -93,8 +93,9 @@ public class FeedRetriever extends AsyncTask<Feed, Void, Boolean> {
         Uri podcastURI = Uri.parse(podcastUrl);
         String path = podcastURI.getPath();
         String destFile = path.substring(path.lastIndexOf('/') + 1);
-        if (!PodcastHistory.alreadyDownloaded(context, destFile)) {
-            PodcastHistory.addPostcast(context, new PodcastHistory(destFile,
+        PodcastHistoryList pHistList = new PodcastHistoryList(context);
+        if (!pHistList.alreadyDownloaded(destFile)) {
+            pHistList.addPodcast(new PodcastHistory(destFile,
                     podcastUrl));
             DownloadManager downloadMgr = (DownloadManager) context
                     .getSystemService(Context.DOWNLOAD_SERVICE);
