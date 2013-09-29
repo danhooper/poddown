@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,6 +23,8 @@ import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.j256.ormlite.dao.RuntimeExceptionDao;
+
 public class FeedRetriever extends AsyncTask<Feed, Void, Boolean> {
     private static final String TAG = "PodDownFeedRetriever";
     Feed feed;
@@ -32,6 +35,11 @@ public class FeedRetriever extends AsyncTask<Feed, Void, Boolean> {
     }
 
     private Boolean openHttpConnection(Feed feed) throws IOException {
+        feed.lastChecked = new Date();
+        DatabaseHelper databaseHelper = new DatabaseHelper(context);
+        RuntimeExceptionDao<Feed, Integer> feedDao = databaseHelper
+                .getFeedDao();
+        feedDao.createOrUpdate(feed);
         InputStream in = null;
         String line = "";
         int response = -1;
@@ -95,8 +103,7 @@ public class FeedRetriever extends AsyncTask<Feed, Void, Boolean> {
         String destFile = path.substring(path.lastIndexOf('/') + 1);
         PodcastHistoryList pHistList = new PodcastHistoryList(context);
         if (!pHistList.alreadyDownloaded(destFile)) {
-            pHistList.addPodcast(new PodcastHistory(destFile,
-                    podcastUrl));
+            pHistList.addPodcast(new PodcastHistory(destFile, podcastUrl));
             DownloadManager downloadMgr = (DownloadManager) context
                     .getSystemService(Context.DOWNLOAD_SERVICE);
             Request req = new Request(podcastURI);

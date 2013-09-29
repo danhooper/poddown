@@ -1,12 +1,6 @@
 package com.danhooper.poddown;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import android.content.Context;
-import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.stmt.QueryBuilder;
 
 public class PodcastHistory {
     public static final String PODCAST_FILE_NAME = "podcast_file_name";

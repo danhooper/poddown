@@ -1,6 +1,7 @@
 package com.danhooper.poddown;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import com.j256.ormlite.field.DatabaseField;
 
@@ -16,23 +17,29 @@ public class Feed implements Serializable {
     int downloadFrequency;
     @DatabaseField
     boolean wifiOnly;
+    @DatabaseField
+    Date lastChecked;
 
     Feed() {
         // needed by ormlite
     }
 
-    Feed(String name, String url, int downloadFrequency, boolean wifiOnly) {
+    Feed(String name, String url, int downloadFrequency, boolean wifiOnly,
+            Date lastChecked) {
         this.name = name;
         this.url = url;
         this.downloadFrequency = downloadFrequency;
         this.wifiOnly = wifiOnly;
+        this.lastChecked = lastChecked;
     }
 
-    Feed(String name, String url, String downloadFrequency, boolean wifiOnly) {
+    Feed(String name, String url, String downloadFrequency, boolean wifiOnly,
+            Date lastChecked) {
         this.name = name;
         this.url = url;
         this.downloadFrequency = convertDownloadFrequency(downloadFrequency);
         this.wifiOnly = wifiOnly;
+        this.lastChecked = lastChecked;
     }
 
     @Override

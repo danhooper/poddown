@@ -12,12 +12,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
 public class PodDown extends Activity {
-    ArrayAdapter<Feed> feedListViewAdapter;
+    FeedAdapter feedAdapter;
     FeedList feedList;
     @SuppressWarnings("unused")
     private static final String TAG = "PodDown";
@@ -27,13 +26,12 @@ public class PodDown extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_urlview);
         feedList = new FeedList(this);
-        feedListViewAdapter = new ArrayAdapter<Feed>(this,
-                android.R.layout.simple_list_item_1, feedList.feeds);
+        feedAdapter = new FeedAdapter(this);
         final ListView feedView = (ListView) findViewById(R.id.feedListView);
         feedView.setOnItemClickListener(feedlClickListener);
-        feedView.setAdapter(feedListViewAdapter);
+        feedView.setAdapter(feedAdapter);
         this.registerForContextMenu(feedView);
-        feedListViewAdapter.notifyDataSetChanged();
+        feedAdapter.notifyDataSetChanged();
         startService(new Intent(this, DownloadService.class));
     }
 
@@ -51,7 +49,7 @@ public class PodDown extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         feedList.updateFeeds();
-        feedListViewAdapter.notifyDataSetChanged();
+        feedAdapter.notifyDataSetChanged();
     }
 
     private final OnItemClickListener feedlClickListener = new OnItemClickListener() {
@@ -74,7 +72,7 @@ public class PodDown extends Activity {
         final AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
                 .getMenuInfo();
         // Retrieve the item that was clicked on
-        Object listItem = feedListViewAdapter.getItem(info.position);
+        Object listItem = feedAdapter.getItem(info.position);
 
         switch (item.getItemId()) {
         case R.id.deleteFeed:
@@ -113,6 +111,6 @@ public class PodDown extends Activity {
         Toast.makeText(this.getApplicationContext(),
                 "Deleting " + feed.toString(), Toast.LENGTH_SHORT).show();
         feedList.deleteFeed(feed);
-        feedListViewAdapter.notifyDataSetChanged();
+        feedAdapter.notifyDataSetChanged();
     }
 }

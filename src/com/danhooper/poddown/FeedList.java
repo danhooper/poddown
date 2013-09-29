@@ -18,6 +18,10 @@ public class FeedList {
         feeds = queryForAllFeeds(feedDao);
     }
 
+    public ArrayList<Feed> getFeeds() {
+        return this.feeds;
+    }
+
     public void updateFeeds() {
         feeds.clear();
         feeds.addAll(feedDao.queryForAll());

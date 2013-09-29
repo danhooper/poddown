@@ -1,4 +1,5 @@
 package com.danhooper.poddown;
+
 import java.sql.SQLException;
 
 import android.content.Context;
@@ -10,11 +11,9 @@ import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
-import com.danhooper.poddown.Feed;
-
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final String DATABASE_NAME = "podDown.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 5;
     private RuntimeExceptionDao<Feed, Integer> feedRuntimeDao = null;
     private RuntimeExceptionDao<PodcastHistory, Integer> pHistRuntimeDao = null;
 
@@ -57,6 +56,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         }
         return feedRuntimeDao;
     }
+
     public RuntimeExceptionDao<PodcastHistory, Integer> getPodcastHistoryDao() {
         if (pHistRuntimeDao == null) {
             pHistRuntimeDao = getRuntimeExceptionDao(PodcastHistory.class);
