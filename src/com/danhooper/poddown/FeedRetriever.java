@@ -86,7 +86,7 @@ public class FeedRetriever extends AsyncTask<Feed, Void, Boolean> {
                 Matcher m = p.matcher(line);
                 while (m.find()) {
                     String podcastUrl = m.group(1);
-                    downloadPodcast(podcastUrl);
+                    downloadPodcast(podcastUrl, feed);
                 }
             }
         } catch (FileNotFoundException e) {
@@ -97,20 +97,23 @@ public class FeedRetriever extends AsyncTask<Feed, Void, Boolean> {
 
     }
 
-    private void downloadPodcast(String podcastUrl) {
+    private void downloadPodcast(String podcastUrl, Feed feed) {
         Uri podcastURI = Uri.parse(podcastUrl);
         String path = podcastURI.getPath();
         String destFile = path.substring(path.lastIndexOf('/') + 1);
-        PodcastHistoryList pHistList = new PodcastHistoryList(context);
+        PodcastHistoryList pHistList = new PodcastHistoryList(context, feed);
         if (!pHistList.alreadyDownloaded(destFile)) {
-            pHistList.addPodcast(new PodcastHistory(destFile, podcastUrl));
             DownloadManager downloadMgr = (DownloadManager) context
                     .getSystemService(Context.DOWNLOAD_SERVICE);
             Request req = new Request(podcastURI);
             req.setDestinationInExternalPublicDir(
-                    Environment.DIRECTORY_DOWNLOADS, destFile);
+                    Environment.DIRECTORY_DOWNLOADS, destFile)
+                    .setNotificationVisibility(
+                            Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
             req.allowScanningByMediaScanner();
-            downloadMgr.enqueue(req);
+            Long downloadId = downloadMgr.enqueue(req);
+            pHistList.addPodcast(new PodcastHistory(feed, destFile, podcastUrl,
+                    downloadId));
         }
     }
 

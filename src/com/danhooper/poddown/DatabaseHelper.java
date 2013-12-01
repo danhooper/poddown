@@ -13,7 +13,7 @@ import com.j256.ormlite.table.TableUtils;
 
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final String DATABASE_NAME = "podDown.db";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 9;
     private RuntimeExceptionDao<Feed, Integer> feedRuntimeDao = null;
     private RuntimeExceptionDao<PodcastHistory, Integer> pHistRuntimeDao = null;
 
@@ -37,12 +37,19 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, ConnectionSource connectionSource,
             int oldVersion, int newVersion) {
+        Log.i(DatabaseHelper.class.getName(), "onUpgrade old version: "
+                + oldVersion + " new version: " + newVersion);
         try {
-            Log.i(DatabaseHelper.class.getName(), "onUpgrade");
-            TableUtils.dropTable(connectionSource, Feed.class, true);
-            TableUtils.dropTable(connectionSource, PodcastHistory.class, true);
-            // after we drop the old databases, we create the new ones
-            onCreate(db, connectionSource);
+            if (oldVersion == 6 && newVersion == 7) {
+                RuntimeExceptionDao<Feed, Integer> dao = getFeedDao();
+                dao.executeRaw("ALTER TABLE `podcasthistory` ADD COLUMN downloaded BOOLEAN;");
+            } else {
+                TableUtils.dropTable(connectionSource, Feed.class, true);
+                TableUtils.dropTable(connectionSource, PodcastHistory.class,
+                        true);
+                // after we drop the old databases, we create the new ones
+                onCreate(db, connectionSource);
+            }
         } catch (SQLException e) {
             Log.e(DatabaseHelper.class.getName(), "Can't drop databases", e);
             throw new RuntimeException(e);
@@ -71,5 +78,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     public void close() {
         super.close();
         feedRuntimeDao = null;
+        pHistRuntimeDao = null;
     }
 }

@@ -1,6 +1,7 @@
 package com.danhooper.poddown;
 
 import android.app.AlarmManager;
+import android.app.DownloadManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -41,12 +42,24 @@ public class DownloadService extends Service {
             @Override
             public void onReceive(Context context, Intent intent) {
                 Log.v(TAG, "onReceive");
-                FeedList feedList = new FeedList(context);
-                for (Feed f : feedList.feeds) {
-                    new FeedRetriever(context).execute(f);
+                String action = intent.getAction();
+                if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)) {
+                    Long downloadId = intent.getLongExtra(
+                            DownloadManager.EXTRA_DOWNLOAD_ID, 0);
+                    PodcastHistoryList pHistList = new PodcastHistoryList(
+                            context);
+                    pHistList.setDownloadedForDownloadId(downloadId, true);
+
+                } else {
+                    FeedList feedList = new FeedList(context);
+                    for (Feed f : feedList.feeds) {
+                        new FeedRetriever(context).execute(f);
+                    }
                 }
             }
         };
+        registerReceiver(broadcastReceiver, new IntentFilter(
+                DownloadManager.ACTION_DOWNLOAD_COMPLETE));
         scheduleTimer();
     }
 
