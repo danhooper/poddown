@@ -7,4 +7,6 @@
         <item>@string/feedCheck12Hour</item>
         <item>@string/feedCheck24our</item>
     </string-array>
+    <string-array name="playlistName">
+    </string-array>
 </resources>

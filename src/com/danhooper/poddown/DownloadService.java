@@ -38,25 +38,8 @@ public class DownloadService extends Service {
         // Display a notification about us starting. We put an icon in the
         // status bar.
         showNotification();
-        broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                Log.v(TAG, "onReceive");
-                String action = intent.getAction();
-                if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)) {
-                    Long downloadId = intent.getLongExtra(
-                            DownloadManager.EXTRA_DOWNLOAD_ID, 0);
-                    PodcastHistoryList pHistList = new PodcastHistoryList(
-                            context);
-                    pHistList.setDownloadedForDownloadId(downloadId, true);
+        broadcastReceiver = new DownloadBroadcastReceiver() {
 
-                } else {
-                    FeedList feedList = new FeedList(context);
-                    for (Feed f : feedList.feeds) {
-                        new FeedRetriever(context).execute(f);
-                    }
-                }
-            }
         };
         registerReceiver(broadcastReceiver, new IntentFilter(
                 DownloadManager.ACTION_DOWNLOAD_COMPLETE));

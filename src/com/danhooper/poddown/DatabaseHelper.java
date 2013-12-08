@@ -13,7 +13,7 @@ import com.j256.ormlite.table.TableUtils;
 
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final String DATABASE_NAME = "podDown.db";
-    private static final int DATABASE_VERSION = 9;
+    private static final int DATABASE_VERSION = 10;
     private RuntimeExceptionDao<Feed, Integer> feedRuntimeDao = null;
     private RuntimeExceptionDao<PodcastHistory, Integer> pHistRuntimeDao = null;
 
@@ -40,9 +40,14 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         Log.i(DatabaseHelper.class.getName(), "onUpgrade old version: "
                 + oldVersion + " new version: " + newVersion);
         try {
-            if (oldVersion == 6 && newVersion == 7) {
+            if (oldVersion == 9 && newVersion == 10) {
                 RuntimeExceptionDao<Feed, Integer> dao = getFeedDao();
-                dao.executeRaw("ALTER TABLE `podcasthistory` ADD COLUMN downloaded BOOLEAN;");
+                try {
+                    dao.executeRaw("ALTER TABLE `feed` ADD COLUMN playlistId INTEGER;");
+                } catch (RuntimeException e) {
+                    Log.v(DatabaseHelper.class.getName(),
+                            "It looks like column playlistId already exists.");
+                }
             } else {
                 TableUtils.dropTable(connectionSource, Feed.class, true);
                 TableUtils.dropTable(connectionSource, PodcastHistory.class,

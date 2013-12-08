@@ -82,6 +82,7 @@ public class PodcastHistoryList {
 
     public PodcastHistory setDownloadedForDownloadId(Long downloadId,
             boolean downloaded) {
+        PodcastHistory pHist = null;
         DatabaseHelper databaseHelper = new DatabaseHelper(context);
         RuntimeExceptionDao<PodcastHistory, Integer> pHistDao = databaseHelper
                 .getPodcastHistoryDao();
@@ -89,7 +90,7 @@ public class PodcastHistoryList {
             List<PodcastHistory> podcasts = pHistDao.queryBuilder().where()
                     .eq(PodcastHistory.PODCAST_DOWNLOAD_ID, downloadId).query();
             if (podcasts.size() > 0) {
-                PodcastHistory pHist = podcasts.get(0);
+                pHist = podcasts.get(0);
                 if (pHist != null) {
                     Log.i(DatabaseHelper.class.getName(),
                             "set downloaded true for " + downloadId);
@@ -100,6 +101,7 @@ public class PodcastHistoryList {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return pHist;
     }
+
 }

@@ -34,6 +34,13 @@
         android:entries="@array/feedCheckFrequency">
 </Spinner>
 
+    <Spinner
+        android:id="@+id/SpinnerPlaylist"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/feedCheckFrequency"
+        android:prompt="@string/playlistType" />
+
     <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"

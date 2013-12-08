@@ -19,27 +19,27 @@ public class Feed implements Serializable {
     boolean wifiOnly;
     @DatabaseField
     Date lastChecked;
+    @DatabaseField
+    long playlistId;
 
     Feed() {
         // needed by ormlite
     }
 
     Feed(String name, String url, int downloadFrequency, boolean wifiOnly,
-            Date lastChecked) {
+            Date lastChecked, long playlistId) {
         this.name = name;
         this.url = url;
         this.downloadFrequency = downloadFrequency;
         this.wifiOnly = wifiOnly;
         this.lastChecked = lastChecked;
+        this.playlistId = playlistId;
     }
 
     Feed(String name, String url, String downloadFrequency, boolean wifiOnly,
-            Date lastChecked) {
-        this.name = name;
-        this.url = url;
-        this.downloadFrequency = convertDownloadFrequency(downloadFrequency);
-        this.wifiOnly = wifiOnly;
-        this.lastChecked = lastChecked;
+            Date lastChecked, long playlistId) {
+        this(name, url, convertDownloadFrequency(downloadFrequency), wifiOnly,
+                lastChecked, playlistId);
     }
 
     @Override

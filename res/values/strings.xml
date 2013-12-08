@@ -18,5 +18,6 @@
     <string name="podcastDownloads">Previous Downloads</string>
     <string name="download_service">Pod Down</string>
     <string name="download_service_started">PodDown Service Started</string>
+    <string name="playlistType">Playlist</string>
 
 </resources>
