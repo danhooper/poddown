@@ -12,35 +12,39 @@ import android.util.Log;
 public class Playlist implements MediaScannerConnectionClient {
     private static final String TAG = "PodDownMediaScannerReceiver";
     Context context;
-    String filename;
+    String filepath;
     PodcastHistory pHist;
 
-    Playlist(Context context, String filename, PodcastHistory pHist) {
+    Playlist(Context context, String filepath, PodcastHistory pHist) {
         this.context = context;
-        this.filename = filename;
+        this.filepath = filepath;
         this.pHist = pHist;
     }
 
     public void onScanCompleted(String path, Uri uri) {
-        Log.v(TAG, "file " + path + " was scanned seccessfully: " + uri);
+        try {
+            Thread.sleep(6000);
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+        Log.v(TAG, "file " + path + " was scanned successfully: " + uri);
         addToPlaylist();
 
     }
 
     private void addToPlaylist() {
         int audioId = getAudioId();
-        Log.v(TAG, "Audio id is " + audioId);
+        // Log.v(TAG, "Audio id is " + audioId);
         ContentResolver resolver = context.getContentResolver();
         String[] cols = new String[] { "count(*)" };
         Feed f = pHist.getFeed();
         Uri playlistURI = MediaStore.Audio.Playlists.Members.getContentUri(
                 "external", f.playlistId);
-        Log.v(TAG, "playlistUri " + playlistURI.toString() + " id "
-                + f.playlistId);
         Cursor cur = resolver.query(playlistURI, cols, null, null, null);
-        cur.moveToFirst();
-        final int base = cur.getInt(0);
-        Log.v(this.getClass().getCanonicalName(), "base is " + base);
+        int base = 0;
+        if (cur.moveToFirst()) {
+            base = cur.getInt(0);
+        }
         cur.close();
         ContentValues values = new ContentValues();
         values.put(MediaStore.Audio.Playlists.Members.PLAY_ORDER, base + 1);
@@ -50,22 +54,26 @@ public class Playlist implements MediaScannerConnectionClient {
     }
 
     private int getAudioId() {
+        String filename = filepath.substring(filepath.lastIndexOf("/") + 1);
+        Log.v(TAG, "Getting audio id for filename " + filename);
         String where = MediaStore.Audio.Media.DISPLAY_NAME + "=?";
         String whereVal[] = { filename };
-        // String whereVal[] = { "test-9.mp3" };
+        int audio_id = -1;
+
         Cursor cursor = context.getContentResolver().query(
-                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                new String[] { MediaStore.Audio.Media._ID }, where, whereVal,
-                null);
+                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null, where,
+                whereVal, null);
         if (cursor.moveToFirst()) {
-            int audio_id = cursor.getInt(cursor
+            audio_id = cursor.getInt(cursor
                     .getColumnIndex(MediaStore.Audio.Media._ID));
             Log.v(TAG, "Audio id is " + audio_id);
-            return audio_id;
         } else {
             Log.e(TAG, "Could not find the audio by id for " + filename);
-            return -1;
         }
+        Log.v(TAG, "The MediaStore.Audio.Media query has " + cursor.getCount()
+                + " results for " + filename);
+        cursor.close();
+        return audio_id;
     }
 
     public void onMediaScannerConnected() {

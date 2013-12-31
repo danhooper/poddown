@@ -37,20 +37,12 @@ public class DownloadBroadcastReceiver extends BroadcastReceiver {
                         .getString(downloadCursor
                                 .getColumnIndex(DownloadManager.COLUMN_LOCAL_FILENAME));
                 MediaScannerConnection.scanFile(context,
-                        new String[] { Environment.DIRECTORY_DOWNLOADS }, null,
-                        new Playlist(context, localFileName, pHist)
-                // new OnScanCompletedListener() {
-                //
-                // public void onScanCompleted(String path, Uri uri) {
-                // Log.v(TAG, "file " + path
-                // + " was scanned seccessfully: " + uri);
-                // addToPlaylist(pHist, getFilenameFromURI(uri));
-                //
-                // }
-                // }
-                        );
+                        new String[] { Environment.DIRECTORY_DOWNLOADS },
+                        new String[] { "audio/mp3" }, new Playlist(context,
+                                localFileName, pHist));
 
             }
+            downloadCursor.close();
 
         } else {
             FeedList feedList = new FeedList(context);
